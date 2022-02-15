@@ -1,9 +1,13 @@
 {
   "compilerOptions": {
+      "typeRoots": [
+      "types",
+      "node_modules/@types"
+    ],
     "target": "es5",
     "module": "commonjs",
     "outDir": "dist",
-    "strict": true,
+    "strict": false,
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,

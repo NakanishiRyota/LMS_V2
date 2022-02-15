@@ -1,5 +1,7 @@
 import { convertUnixTime, millSecToMin, nowUnixTime } from "./DateUtil";
 
+const SEVEN_DAYS_IN_MILLSECONDS = 7 * 24 * 60 * 60 * 1000;
+
 export type studyLog = {
   id: number;
   subject: string;
@@ -29,49 +31,19 @@ const getStudyTime = (studyLog: studyLog) => {
 
 export const all = () => true;
 
-export const inThisWeek = (studyLogs: studyLog[]): boolean => {
-  studyLogs
-    // studyLog[] == Array<studyLog>
-    .map(
-      (studyLog) =>
-        Object.entries(studyLog)
-          // [key, value][] == Array<[k, v]> == [[id, 数値],[subject, 文字列], [starttime, 文字列], [finishTime, 文字列]]
-          .filter(([key, value]) => key === "startTime")
-      // [key, value][] == Array<[k, v]> == [[starttime, 文字列]]
-    )
-    // [key, value][][] === Array<Array<[k,v]>> == [[[starttime, 文字列]],[[starttime, 文字列]],[[starttime, 文字列]] .... ]
-    .map(([key, value]) => {
-      if (typeof value === "string") {
-        return convertUnixTime(value);
-      } else {
-        throw new Error();
-      }
-    })
-    //[123982198, 129389123, 12389123891]
-    .filter((x) => {
-      return typeof x === "number";
-    })
-    .filter((startUnixTime) => {
-      if (
-        nowUnixTime - startUnixTime >= -604800000 &&
-        nowUnixTime - startUnixTime <= 604800000
-      ) {
-        return true;
-      } else {
-        return false;
-      }
-    })
-    //[123982198, 129389123]
-    .reduce((prev, curr) => prev + curr, 0);
-  // 23892389047
-  // return true;
-  return false;
-};
+export const inThisWeek = ([startTime, finishTime]: [number, number]): boolean => {
+  const startUnixTime = startTime;
+    if (
+      nowUnixTime - startUnixTime >= -SEVEN_DAYS_IN_MILLSECONDS &&
+      nowUnixTime - startUnixTime <= SEVEN_DAYS_IN_MILLSECONDS
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+}
 
-// const inThisWeek = ([startTime, finishTime]: [number, number]): boolean => {
-//   if(startTimeが今週) return true
-//   else return false
-// }
+
 
 export const pickKV =
   (keys: Array<string | number>) =>
