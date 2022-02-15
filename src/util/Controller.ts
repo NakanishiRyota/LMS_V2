@@ -1,7 +1,3 @@
-// import {
-//   isCallSignatureDeclaration,
-//   reduceEachLeadingCommentRange,
-// } from "typescript";
 import { convertUnixTime, millSecToMin, nowUnixTime } from "./DateUtil";
 
 const SEVEN_DAYS_IN_MILLSECONDS = 7 * 24 * 60 * 60 * 1000;
@@ -34,8 +30,6 @@ const getStudyTime = (studyLog: studyLog) => {
 };
 
 export const all = () => true;
-
-
 
 export const inThisWeek = ([startTime, finishTime]: [number, number]): boolean => {
   const startUnixTime = startTime;
@@ -110,11 +104,11 @@ const japanese = xxxx("国語");
 const math = xxxx("数学");
 
 const aaa = (first: string) => (second: string) => first + second;
-const firstYear = aaa('1年生')
-const secondYear = aaa('2年生')
+const firstYear = aaa("1年生");
+const secondYear = aaa("2年生");
 
-console.log(firstYear('藤城')) // 1年生藤城
-console.log(secondYear('スズキ')) // ２年生すずき
+console.log(firstYear("藤城")); // 1年生藤城
+console.log(secondYear("スズキ")); // ２年生すずき
 
 const calcSubjectTotalStudyTime = [
   {
