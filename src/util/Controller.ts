@@ -1,3 +1,7 @@
+import {
+  isCallSignatureDeclaration,
+  reduceEachLeadingCommentRange,
+} from "typescript";
 import { convertUnixTime, millSecToMin, nowUnixTime } from "./DateUtil";
 
 const SEVEN_DAYS_IN_MILLSECONDS = 7 * 24 * 60 * 60 * 1000;
@@ -32,6 +36,7 @@ const getStudyTime = (studyLog: studyLog) => {
 export const all = () => true;
 
 
+
 export const inThisWeek = ([startTime, finishTime]: [number, number]): boolean => {
   const startUnixTime = startTime;
     if (
@@ -44,32 +49,76 @@ export const inThisWeek = ([startTime, finishTime]: [number, number]): boolean =
     }
 }
 
+
+// const inThisWeek = ([startTime, finishTime]: [number, number]): boolean => {
+//   if(startTimeが今週) return true
+//   else return false
+// }
+
+export const pickKV =
+  (keys: Array<string | number>) =>
+  ([key, value]: any) =>
+    keys.includes(key);
+
+export const pickStartTimeFinishTime = pickKV(["startTime", "finishTime"]);
+
+export const applyValue =
+  (f: Function) =>
+  ([key, value]: any) =>
+    f(value);
+
+const applyConvertUnixTimeToValue = applyValue(convertUnixTime);
+
+const pickStartTimeFinishTimeFrom = (studyLogs: studyLog[]) =>
+  studyLogs.map((studyLog) =>
+    Object.entries(studyLog).filter(pickStartTimeFinishTime)
+  );
+
 const calcStudyTimeWith =
   (timeCond: (args: any) => boolean) => (studyLogs: studyLog[]) =>
     studyLogs
-      .map(
-
-       (studyLog) =>
+      .map((studyLog) =>
         Object.entries(studyLog)
-          .filter(([key, value]) => key === "startTime" || key === "finishTime")
-          .map((arr) => {
-            if (typeof arr[1] === "string") return convertUnixTime(arr[1]);
-            else throw new Error();
-          })
+          .filter(pickStartTimeFinishTime)
+          .map(applyConvertUnixTimeToValue)
       )
-// [ [ 4314784392479, 84394280438290 ], [ 4839248290348, 89432048209 ],[ 4839248290348, 89432048209 ]] 
+
+      // [ [ 4314784392479, 84394280438290 ], [ 4839248290348, 89432048209 ],[ 4839248290348, 89432048209 ]]
       .filter(timeCond)
-// [ [ 4314784392479, 84394280438290 ], [ 4839248290348, 89432048209 ]] 
+      // [ [ 4314784392479, 84394280438290 ], [ 4839248290348, 89432048209 ]]
       .map(([startTime, finishTime]) => millSecToMin(finishTime - startTime))
-// [ 10, 8] 
+      // [ 10, 8]
       .reduce((acm, value) => acm + value, 0);
-// 18 
+// 18
 
 export const calcTotalStudyTime = calcStudyTimeWith(all);
 // export const calcThisMonthStudyTime = calcStudyTimeWith(inThisMonth);
 export const calcThisWeekTotalStudyTime = calcStudyTimeWith(inThisWeek);
 
 //以下、国数英社理の勉強時間を計算する
+
+const xxxx =
+  (subject: string) =>
+  (studyLogs: studyLog[]): number =>
+    millSecToMin(
+      studyLogs
+        .filter((studyLog) => studyLog.subject === subject)
+        .map((studyLog) => getStudyTime(studyLog))
+        .reduce(
+          (acum, { startTime, finishTime }) => acum + finishTime - startTime,
+          0
+        )
+    );
+
+const japanese = xxxx("国語");
+const math = xxxx("数学");
+
+const aaa = (first: string) => (second: string) => first + second;
+const firstYear = aaa('1年生')
+const secondYear = aaa('2年生')
+
+console.log(firstYear('藤城')) // 1年生藤城
+console.log(secondYear('スズキ')) // ２年生すずき
 
 const calcSubjectTotalStudyTime = [
   {

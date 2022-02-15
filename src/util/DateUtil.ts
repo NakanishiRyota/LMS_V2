@@ -7,7 +7,6 @@ export const dayNum: number = date.getDate();
 
 export const nowMonthDay = `${monthNum}月${dayNum}日`;
 
-
 export const getDate = () => {
   const diff = new Date().getTimezoneOffset() * 60 * 1000;
   return new Date(Date.now() - diff);
@@ -21,10 +20,23 @@ export const getFormattedNowTime = () => {
   return sliced.join(":");
 };
 
-
-export const millSecToMin = (millSec: number): number => {
-  return millSec / 60 / 1000;
+// ISOStringRoundDownByMin === ISOSRDBM
+export const getISOSRDBMNowTime = () => {
+  const nowISOstring = getDate().toISOString();
+  const array = nowISOstring.split(":");
+  const sliced = array.slice(0, 2);
+  return sliced.join(":");
 };
+
+export const millSecToSec = (millSec: number): number => millSec / 1000;
+
+const EFFECTIVE_DIGIT = 1000000000;
+
+export const secToMin = (sec: number): number =>
+  Math.floor((sec / 60) * EFFECTIVE_DIGIT) / EFFECTIVE_DIGIT;
+
+export const millSecToMin = (millSec: number): number =>
+  secToMin(millSecToSec(millSec));
 
 //Controllerで使用
 export const convertUnixTime = (stringTime: string): number => {
@@ -32,6 +44,11 @@ export const convertUnixTime = (stringTime: string): number => {
   const time = new Date(stringTime).getTime();
   return time;
 };
+
+//1970年1月1日からの経過ミリ秒数を返す
+export const ISOSRDBMtoUnixTime = (stringTime: string): number =>
+  new Date(stringTime).getTime();
+
 
 //現在時刻を取得
 export const nowTime = getFormattedNowTime();

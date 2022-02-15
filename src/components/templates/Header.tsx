@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import { nowMonthDay } from "../../util/DateUtil";
 
 export const Header = () => {

@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from 'react';
 import { SubjectArray } from "../atoms/select/SubjectArray";
 
 type Select = {
