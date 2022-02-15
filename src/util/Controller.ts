@@ -1,4 +1,4 @@
-import { convertUnixTime, millSecToMin, nowUnixTime } from "./DateUtil";
+import { convertUnixTime, millSecToMin, nowUnixTime, theBeginningOfMonthUnixTime, theEndOfMonthUnixTime} from "./DateUtil";
 
 const SEVEN_DAYS_IN_MILLSECONDS = 7 * 24 * 60 * 60 * 1000;
 
@@ -45,6 +45,20 @@ export const inThisWeek = ([startTime, finishTime]: [number, number]): boolean =
 
 
 
+const inThisMonth = ([startTime, finishTime]): boolean => {
+  const startUnixTime = startTime;
+  if (
+    startUnixTime - theBeginningOfMonthUnixTime >= 0 &&
+    startUnixTime - theEndOfMonthUnixTime <= 0
+  ) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+
+
 export const pickKV =
   (keys: Array<string | number>) =>
   ([key, value]: any) =>
@@ -72,7 +86,6 @@ const calcStudyTimeWith =
           .filter(pickStartTimeFinishTime)
           .map(applyConvertUnixTimeToValue)
       )
-
       // [ [ 4314784392479, 84394280438290 ], [ 4839248290348, 89432048209 ],[ 4839248290348, 89432048209 ]]
       .filter(timeCond)
       // [ [ 4314784392479, 84394280438290 ], [ 4839248290348, 89432048209 ]]
@@ -82,12 +95,12 @@ const calcStudyTimeWith =
 // 18
 
 export const calcTotalStudyTime = calcStudyTimeWith(all);
-// export const calcThisMonthStudyTime = calcStudyTimeWith(inThisMonth);
+export const calcThisMonthStudyTime = calcStudyTimeWith(inThisMonth);
 export const calcThisWeekTotalStudyTime = calcStudyTimeWith(inThisWeek);
 
 //以下、国数英社理の勉強時間を計算する
 
-const xxxx =
+const calsSubjectStudyTime =
   (subject: string) =>
   (studyLogs: studyLog[]): number =>
     millSecToMin(
@@ -100,96 +113,8 @@ const xxxx =
         )
     );
 
-const japanese = xxxx("国語");
-const math = xxxx("数学");
-
-const aaa = (first: string) => (second: string) => first + second;
-const firstYear = aaa("1年生");
-const secondYear = aaa("2年生");
-
-console.log(firstYear("藤城")); // 1年生藤城
-console.log(secondYear("スズキ")); // ２年生すずき
-
-const calcSubjectTotalStudyTime = [
-  {
-    subject: "国語",
-    func: function (studyLogs: studyLog[]): number {
-      let startTimeSum = 0;
-      let finishTimeSum = 0;
-      studyLogs.forEach((studyLog) => {
-        if (studyLog.subject === this.subject) {
-          const { startTime, finishTime } = getStudyTime(studyLog);
-          startTimeSum += startTime;
-          finishTimeSum += finishTime;
-        }
-      });
-      return millSecToMin(finishTimeSum - startTimeSum);
-    },
-  },
-  {
-    subject: "数学",
-    func: function (studyLogs: studyLog[]): number {
-      let startTimeSum = 0;
-      let finishTimeSum = 0;
-      studyLogs.forEach((studyLog) => {
-        if (studyLog.subject === this.subject) {
-          const { startTime, finishTime } = getStudyTime(studyLog);
-          startTimeSum += startTime;
-          finishTimeSum += finishTime;
-        }
-      });
-      return millSecToMin(finishTimeSum - startTimeSum);
-    },
-  },
-  {
-    subject: "英語",
-    func: function (studyLogs: studyLog[]): number {
-      let startTimeSum = 0;
-      let finishTimeSum = 0;
-      studyLogs.forEach((studyLog) => {
-        if (studyLog.subject === this.subject) {
-          const { startTime, finishTime } = getStudyTime(studyLog);
-          startTimeSum += startTime;
-          finishTimeSum += finishTime;
-        }
-      });
-      return millSecToMin(finishTimeSum - startTimeSum);
-    },
-  },
-  {
-    subject: "社会",
-    func: function (studyLogs: studyLog[]): number {
-      let startTimeSum = 0;
-      let finishTimeSum = 0;
-      studyLogs.forEach((studyLog) => {
-        if (studyLog.subject === this.subject) {
-          const { startTime, finishTime } = getStudyTime(studyLog);
-          startTimeSum += startTime;
-          finishTimeSum += finishTime;
-        }
-      });
-      return millSecToMin(finishTimeSum - startTimeSum);
-    },
-  },
-  {
-    subject: "理科",
-    func: function (studyLogs: studyLog[]): number {
-      let startTimeSum = 0;
-      let finishTimeSum = 0;
-      studyLogs.forEach((studyLog) => {
-        if (studyLog.subject === this.subject) {
-          const { startTime, finishTime } = getStudyTime(studyLog);
-          startTimeSum += startTime;
-          finishTimeSum += finishTime;
-        }
-      });
-      return millSecToMin(finishTimeSum - startTimeSum);
-    },
-  },
-];
-
-export const calcJapaneseTotalStudyTime = calcSubjectTotalStudyTime[0].func;
-export const calcMathTotalStudyTime = calcSubjectTotalStudyTime[1].func;
-export const calcSocialstudyTotalStudyTime = calcSubjectTotalStudyTime[2].func;
-export const calcScienceTotalStudyTime = calcSubjectTotalStudyTime[3].func;
-export const calcEnglishTotalStudyTime = calcSubjectTotalStudyTime[4].func;
+export const calcJapaneseTotalStudyTime = calsSubjectStudyTime("国語");
+export const calcMathTotalStudyTime = calsSubjectStudyTime("数学");
+export const calcEnglishTotalStudyTime = calsSubjectStudyTime("英語");
+export const calcSocialstudyTotalStudyTime = calsSubjectStudyTime("社会");
+export const calcScienceTotalStudyTime = calsSubjectStudyTime("理科");

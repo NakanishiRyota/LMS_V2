@@ -1,5 +1,5 @@
 //現在の日付情報を取得
-let date = new Date();
+export let date = new Date();
 
 export const monthNum: number = date.getMonth() + 1;
 
@@ -11,6 +11,37 @@ export const getDate = () => {
   const diff = new Date().getTimezoneOffset() * 60 * 1000;
   return new Date(Date.now() - diff);
 };
+
+//現在のISO時間を取得
+export const  now: Date = getDate();
+
+//月末のISO時間を取得
+export const getTheEndOfMonth = (now: Date):Date => {
+  now.setMonth(now.getMonth() + 1);
+  now.setDate(0);
+  now.setHours(32, 59, 59);
+  return now;
+};
+
+//月末23:59:59のUnixTimeを取得
+export const getTheEndOfMonthUnixTime = (): number => {
+  return getTheEndOfMonth(now).getTime();
+};
+
+//月初のISO時間を取得
+export const getTheBeginningOfMonth = (now: Date): Date => {
+  now.setDate(1);
+  now.setHours(9, 0, 0);
+  return now;
+};
+
+//月初00:00:00のUnixTimeを取得
+export const getTheBeginningOfMonthUnixTime = (): number => {
+  return getTheBeginningOfMonth(now).getTime();
+};
+
+export const theBeginningOfMonthUnixTime = getTheBeginningOfMonthUnixTime();
+export const theEndOfMonthUnixTime = getTheEndOfMonthUnixTime();
 
 //FormのnowTimeで使用
 export const getFormattedNowTime = () => {
@@ -49,9 +80,8 @@ export const convertUnixTime = (stringTime: string): number => {
 export const ISOSRDBMtoUnixTime = (stringTime: string): number =>
   new Date(stringTime).getTime();
 
-
 //現在時刻を取得
 export const nowTime = getFormattedNowTime();
 
 //現在時刻をUnixTimeで取得
-export const nowUnixTime = convertUnixTime(nowTime);
+export const nowUnixTime = date.getTime();

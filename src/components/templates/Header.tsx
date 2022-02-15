@@ -1,5 +1,6 @@
 import React from "react";
 import { nowMonthDay } from "../../util/DateUtil";
+import img from "./pen_enpitsu_mark.png";
 
 export const Header = () => {
   return (
@@ -7,7 +8,7 @@ export const Header = () => {
       <div>
         <img
           className="w-10 h-10"
-          src="./images/pen_enpitsu_mark.png"
+          src={img}
           alt="鉛筆の画像"
         />
           </div>

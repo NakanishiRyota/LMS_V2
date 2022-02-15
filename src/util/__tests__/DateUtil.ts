@@ -3,6 +3,8 @@ import {
   millSecToMin,
   millSecToSec,
   secToMin,
+  getTheEndOfMonth,
+  date
 } from "../DateUtil";
 
 it("millSecToSec", () => {
@@ -22,4 +24,8 @@ it("millSecToMin", () => {
 
 it("ISOSRDBMtoUnixTime", () => {
   expect(ISOSRDBMtoUnixTime("2022-02-15T15:23")).toBe(1644906180000);
+});
+
+it("getTheEndOfMonth", () => {
+  expect(getTheEndOfMonth(date)).toBe(0);
 });

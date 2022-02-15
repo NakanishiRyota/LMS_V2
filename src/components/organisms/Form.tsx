@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { InputLabel } from "../atoms/input/InputLabel";
 import { Select } from "../molecules/Select";
 import { nowTime } from "../../util/DateUtil";
-import { studyLog } from "../../util/Controller";
+import { calcThisMonthStudyTime, studyLog } from "../../util/Controller";
 import {
   calcTotalStudyTime,
   calcJapaneseTotalStudyTime,
@@ -67,8 +67,7 @@ export const Form = () => {
        },
      },
    ];
-
-
+  
 
   const totalStudyTime = calcTotalStudyTime(studyLogs);
   const japaneseStudyTime = calcJapaneseTotalStudyTime(studyLogs);
@@ -77,7 +76,7 @@ export const Form = () => {
   const scienceStudyTime = calcScienceTotalStudyTime(studyLogs);
   const englishStudyTime = calcEnglishTotalStudyTime(studyLogs);
   const weekStudyTime = calcThisWeekTotalStudyTime(studyLogs);
-  // const monthStudyTime = someFuncition(studyLogs);
+  const monthStudyTime = calcThisMonthStudyTime(studyLogs);
 
   
   return (
@@ -90,6 +89,7 @@ export const Form = () => {
         socialstudyStudyTime={socialstudyStudyTime}
         scienceStudyTime={scienceStudyTime}
         weekStudyTime={weekStudyTime}
+        monthStudyTime={monthStudyTime}
       />
       <div className="px-4 py-4 m-4 w-80 sm:w-96">
         <form>
