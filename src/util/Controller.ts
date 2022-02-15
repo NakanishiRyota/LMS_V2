@@ -1,7 +1,3 @@
-import {
-  isCallSignatureDeclaration,
-  reduceEachLeadingCommentRange,
-} from "typescript";
 import { convertUnixTime, millSecToMin, nowUnixTime } from "./DateUtil";
 
 export type studyLog = {
@@ -69,6 +65,7 @@ export const inThisWeek = (studyLogs: studyLog[]): boolean => {
     .reduce((prev, curr) => prev + curr, 0);
   // 23892389047
   // return true;
+  return false;
 };
 
 // const inThisWeek = ([startTime, finishTime]: [number, number]): boolean => {
@@ -135,11 +132,11 @@ const japanese = xxxx("国語");
 const math = xxxx("数学");
 
 const aaa = (first: string) => (second: string) => first + second;
-const firstYear = aaa('1年生')
-const secondYear = aaa('2年生')
+const firstYear = aaa("1年生");
+const secondYear = aaa("2年生");
 
-console.log(firstYear('藤城')) // 1年生藤城
-console.log(secondYear('スズキ')) // ２年生すずき
+console.log(firstYear("藤城")); // 1年生藤城
+console.log(secondYear("スズキ")); // ２年生すずき
 
 const calcSubjectTotalStudyTime = [
   {
