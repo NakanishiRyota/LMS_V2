@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-import React from "react";
-=======
 import {
   ISOSRDBMtoUnixTime,
   millSecToMin,
@@ -26,4 +23,3 @@ it("millSecToMin", () => {
 it("ISOSRDBMtoUnixTime", () => {
   expect(ISOSRDBMtoUnixTime("2022-02-15T15:23")).toBe(1644906180000);
 });
->>>>>>> a1e89ce5f406862699f668bdebc96a75776888f1

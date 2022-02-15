@@ -1,7 +1,7 @@
-import {
-  isCallSignatureDeclaration,
-  reduceEachLeadingCommentRange,
-} from "typescript";
+// import {
+//   isCallSignatureDeclaration,
+//   reduceEachLeadingCommentRange,
+// } from "typescript";
 import { convertUnixTime, millSecToMin, nowUnixTime } from "./DateUtil";
 
 const SEVEN_DAYS_IN_MILLSECONDS = 7 * 24 * 60 * 60 * 1000;
@@ -50,10 +50,6 @@ export const inThisWeek = ([startTime, finishTime]: [number, number]): boolean =
 }
 
 
-// const inThisWeek = ([startTime, finishTime]: [number, number]): boolean => {
-//   if(startTimeが今週) return true
-//   else return false
-// }
 
 export const pickKV =
   (keys: Array<string | number>) =>
