@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import img from './kaeru.png'
 
 type MainImageProp = {
   fileUrl: any;
@@ -17,7 +18,7 @@ export const MainImage = () => {
     <>
       <div className="px-4 py-4 bg-gray-400 w-80 sm:w-1/2">
         <div className="text-center">
-        <img className="px-2 py-4" src={fileUrl} alt="アバターの画像です。" />
+        <img className="px-2 py-4" src={img} alt="アバターの画像です。" />
         </div>
         <div className="text-center">
           <input type="file" accept="image/*" onChange={processImage} />
