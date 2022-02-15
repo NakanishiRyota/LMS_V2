@@ -13,10 +13,10 @@ export const getDate = () => {
 };
 
 //現在のISO時間を取得
-export const  now: Date = getDate();
+export const now: Date = getDate();
 
 //月末のISO時間を取得
-export const getTheEndOfMonth = (now: Date):Date => {
+export const getTheEndOfMonth = (now: Date): Date => {
   now.setMonth(now.getMonth() + 1);
   now.setDate(0);
   now.setHours(32, 59, 59);
@@ -42,6 +42,28 @@ export const getTheBeginningOfMonthUnixTime = (): number => {
 
 export const theBeginningOfMonthUnixTime = getTheBeginningOfMonthUnixTime();
 export const theEndOfMonthUnixTime = getTheEndOfMonthUnixTime();
+
+//週初めのISO時間を取得
+export const getTheBeginningOfWeek = () => {
+  while (true) {
+    if (date.getDay() == 1) break;
+    date = new Date(date.getFullYear(), date.getMonth(), date.getDate() - 1);
+  }
+  return date;
+};
+
+//週初め00:00:00のUnixTimeを取得
+export const getTheBeginningOfWeekUnixTime = () => {
+  return getTheBeginningOfWeek().getTime();
+};
+
+//週末23:59:59のUnixTimeを取得
+export const getTheEndOfWeekUnixTime = () => {
+  return getTheBeginningOfWeek().getTime() + (7 * 24 * 60 * 60 - 1) * 1000;
+};
+
+export const theBiginningOfWeekUnixTime = getTheBeginningOfWeekUnixTime();
+export const theEndOfWeekUnixTime = getTheEndOfWeekUnixTime();
 
 //FormのnowTimeで使用
 export const getFormattedNowTime = () => {

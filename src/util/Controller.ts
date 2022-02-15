@@ -1,4 +1,4 @@
-import { convertUnixTime, millSecToMin, nowUnixTime, theBeginningOfMonthUnixTime, theEndOfMonthUnixTime} from "./DateUtil";
+import { convertUnixTime, millSecToMin, nowUnixTime, theBeginningOfMonthUnixTime, theEndOfMonthUnixTime, theBiginningOfWeekUnixTime, theEndOfWeekUnixTime} from "./DateUtil";
 
 const SEVEN_DAYS_IN_MILLSECONDS = 7 * 24 * 60 * 60 * 1000;
 
@@ -34,8 +34,8 @@ export const all = () => true;
 export const inThisWeek = ([startTime, finishTime]: [number, number]): boolean => {
   const startUnixTime = startTime;
     if (
-      nowUnixTime - startUnixTime >= -SEVEN_DAYS_IN_MILLSECONDS &&
-      nowUnixTime - startUnixTime <= SEVEN_DAYS_IN_MILLSECONDS
+      startUnixTime - theBiginningOfWeekUnixTime >= 0 &&
+      startUnixTime - theEndOfWeekUnixTime <= 0
     ) {
       return true;
     } else {
