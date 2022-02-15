@@ -31,36 +31,50 @@ const getStudyTime = (studyLog: studyLog) => {
 export const all = () => true;
 
 export const inThisWeek = (studyLogs: studyLog[]): boolean => {
-  studyLogs.map((studyLog) =>
-    Object.entries(studyLog).filter(([key, value]) => key === "startTime")
-  )
-  .map(([key, value]) => {
-    if (typeof value === "string") {
-      return convertUnixTime(value);
-    } else {
-      throw new Error();
-    }
-  })
-  .filter((x) => {
-    return typeof x === "number";
-  })
-  .forEach((startUnixTime) => {
-    if (
-      nowUnixTime - startUnixTime >= -604800000 &&
-      nowUnixTime - startUnixTime <= 604800000
-    ) {
-      return true;
-    } else {
-      return false;
-    }
-  })
+  studyLogs
+  // studyLog[] == Array<studyLog>
+    .map((studyLog) =>
+      Object.entries(studyLog).
+      // [key, value][] == Array<[k, v]> == [[id, 数値],[subject, 文字列], [starttime, 文字列], [finishTime, 文字列]]
+      filter(([key, value]) => key === "startTime")
+      // [key, value][] == Array<[k, v]> == [[starttime, 文字列]]
+    )
+  // [key, value][][] === Array<Array<[k,v]>> == [[[starttime, 文字列]],[[starttime, 文字列]],[[starttime, 文字列]] .... ]
+    .map(([key, value]) => {
+      if (typeof value === "string") {
+        return convertUnixTime(value);
+      } else {
+        throw new Error();
+      }
+    })
+    //
+    .filter((x) => {
+      return typeof x === "number";
+    })
+    .forEach((startUnixTime) => {
+      if (
+        nowUnixTime - startUnixTime >= -604800000 &&
+        nowUnixTime - startUnixTime <= 604800000
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    });
   return true;
 };
+
+const inThisWeek = ([startTime, finishTime]: [number, number]): boolean => {
+  if(startTimeが今週) return true
+  else return false
+}
 
 const calcStudyTimeWith =
   (timeCond: (args: any) => boolean) => (studyLogs: studyLog[]) =>
     studyLogs
-      .map((studyLog) =>
+      .map(
+
+       (studyLog) =>
         Object.entries(studyLog)
           .filter(([key, value]) => key === "startTime" || key === "finishTime")
           .map((arr) => {
@@ -68,15 +82,17 @@ const calcStudyTimeWith =
             else throw new Error();
           })
       )
+// [ [ 4314784392479, 84394280438290 ], [ 4839248290348, 89432048209 ],[ 4839248290348, 89432048209 ]] 
       .filter(timeCond)
+// [ [ 4314784392479, 84394280438290 ], [ 4839248290348, 89432048209 ]] 
       .map(([startTime, finishTime]) => millSecToMin(finishTime - startTime))
+// [ 10, 8] 
       .reduce((acm, value) => acm + value, 0);
-
+// 18 
 
 export const calcTotalStudyTime = calcStudyTimeWith(all);
 // export const calcThisMonthStudyTime = calcStudyTimeWith(inThisMonth);
 export const calcThisWeekTotalStudyTime = calcStudyTimeWith(inThisWeek);
-
 
 //以下、国数英社理の勉強時間を計算する
 
@@ -156,10 +172,10 @@ const calcSubjectTotalStudyTime = [
       return millSecToMin(finishTimeSum - startTimeSum);
     },
   },
-]
+];
 
-export const calcJapaneseTotalStudyTime = calcSubjectTotalStudyTime[0].func
-export const calcMathTotalStudyTime = calcSubjectTotalStudyTime[1].func
-export const calcSocialstudyTotalStudyTime = calcSubjectTotalStudyTime[2].func
-export const calcScienceTotalStudyTime = calcSubjectTotalStudyTime[3].func
-export const calcEnglishTotalStudyTime = calcSubjectTotalStudyTime[4].func
+export const calcJapaneseTotalStudyTime = calcSubjectTotalStudyTime[0].func;
+export const calcMathTotalStudyTime = calcSubjectTotalStudyTime[1].func;
+export const calcSocialstudyTotalStudyTime = calcSubjectTotalStudyTime[2].func;
+export const calcScienceTotalStudyTime = calcSubjectTotalStudyTime[3].func;
+export const calcEnglishTotalStudyTime = calcSubjectTotalStudyTime[4].func;
