@@ -1,9 +1,25 @@
-import React from "react";
-import { year, month, day, hour, minute } from "../DateUtil";
+import {
+  ISOSRDBMtoUnixTime,
+  millSecToMin,
+  millSecToSec,
+  secToMin,
+} from "../DateUtil";
 
-it("confirmdateFormat", () => {
-    expect(year).toBe("2022");
-    expect(month).toBe("02");
-    expect(day).toBe("13");
-    expect(hour).toBe("17")
-})
+it("millSecToSec", () => {
+  expect(millSecToSec(1000)).toBe(1);
+  expect(millSecToSec(1)).toBe(0.001);
+});
+
+it("secToMin", () => {
+  expect(secToMin(60)).toBe(1);
+  expect(secToMin(1.8)).toBe(0.03);
+});
+
+it("millSecToMin", () => {
+  expect(millSecToMin(60000)).toBe(1);
+  expect(millSecToMin(1.8)).toBe(0.00003);
+});
+
+it("ISOSRDBMtoUnixTime", () => {
+  expect(ISOSRDBMtoUnixTime("2022-02-15T15:23")).toBe(1644906180000);
+});

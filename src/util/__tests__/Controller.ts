@@ -1,71 +1,117 @@
+import { pickKV, pickStartTimeFinishTime } from "../Controller";
+import { convertUnixTime } from "../DateUtil";
 
-const log = (a) => {
-  console.log(a)
-  return a
-}
+describe("Controller.ts", () => {
+  const studyLogs = [
+    {
+      id: 1,
+      subject: "国語",
+      startTime: "2022-02-15T15:00",
+      finishTime: "2022-02-15T16:00",
+    },
+    {
+      id: 2,
+      subject: "数学",
+      startTime: "2022-02-15T15:00",
+      finishTime: "2022-02-15T15:30",
+    },
+    {
+      id: 3,
+      subject: "社会",
+      startTime: "2022-02-15T15:00",
+      finishTime: "2022-02-15T15:35",
+    },
+  ];
 
-const identity = (a) => a
-const convertUnixTime = (a) => parseInt(a)
+  describe("startTimeとfinishTimeをフィルター", () => {
+    it("studyLogに対して", () => {
+      const studyLog_KeyValue = [
+        ["id", 1],
+        ["subject", "国語"],
+        ["startTime", "2022-02-15T15:00"],
+        ["finishTime", "2022-02-15T16:00"],
+      ];
 
-const inThisWeek = (studyLogs) => {
-  return studyLogs
-  // studyLog[] == Array<studyLog>
-    .map((studyLog) =>
-      Object.entries(studyLog).
-      // [key, value][] == Array<[k, v]> == [[id, 数値],[subject, 文字列], [starttime, 文字列], [finishTime, 文字列]]
-      filter(([key, value]) => key === "startTime")
-      // [key, value][] == Array<[k, v]> == [[starttime, 文字列]]
-    )
+      const returnedValue = studyLog_KeyValue.filter(pickStartTimeFinishTime);
 
-  // [key, value][][] === Array<Array<[k,v]>> == [[[starttime, 文字列]],[[starttime, 文字列]],[[starttime, 文字列]] .... ]
-    .flat()
-  // [key, value][] === Array<[k,v]> == [[starttime, 文字列],[starttime, 文字列],[starttime, 文字列] .... ]
-
-    .map(([key, value]) => {
-      if (typeof value === "string") {
-        return convertUnixTime(value);
-      } else {
-        throw new Error();
-      }
-    })
-  // number[]
-    .filter((x) => {
-      return typeof x === "number";
-    })
-  // number[]
-    .forEach((startUnixTime) => {
-      if (
-        nowUnixTime - startUnixTime >= -604800000 &&
-        nowUnixTime - startUnixTime <= 604800000
-      ) {
-        return true;
-      } else {
-        return false;
-      }
+      expect(returnedValue).toEqual([
+        ["startTime", "2022-02-15T15:00"],
+        ["finishTime", "2022-02-15T16:00"],
+      ]);
     });
-  // return true;
-};
 
+    it("studyLogの配列に対して", () => {
+      const studyLogs_KeyValue = [
+        [
+          ["id", 1],
+          ["subject", "国語"],
+          ["startTime", "2022-02-15T15:00"],
+          ["finishTime", "2022-02-15T16:00"],
+        ],
+        [
+          ["id", 2],
+          ["subject", "数学"],
+          ["startTime", "2022-02-15T15:00"],
+          ["finishTime", "2022-02-15T16:00"],
+        ],
+        [
+          ["id", 3],
+          ["subject", "社会"],
+          ["startTime", "2022-02-15T15:00"],
+          ["finishTime", "2022-02-15T16:00"],
+        ],
+      ];
 
-const studyLogs = [
-  {
-    id: 1,
-    subject: '国語',
-    startTime: '000001',
-    finishTime: '111111',
-  },
-  {
-    id: 2,
-    subject: '数学',
-    startTime: '000002',
-    finishTime: '111111',
-  },
-  {
-    id: 3,
-    subject: '社会',
-    startTime: '000003',
-    finishTime: '111111',
-  }
-]
+      const returnedValue = studyLogs_KeyValue.map((studyLog_kv) =>
+        studyLog_kv.filter(pickStartTimeFinishTime)
+      );
 
-console.log(inThisWeek(studyLogs))
+      expect(returnedValue).toEqual([
+        [
+          ["startTime", "2022-02-15T15:00"],
+          ["finishTime", "2022-02-15T16:00"],
+        ],
+        [
+          ["startTime", "2022-02-15T15:00"],
+          ["finishTime", "2022-02-15T16:00"],
+        ],
+        [
+          ["startTime", "2022-02-15T15:00"],
+          ["finishTime", "2022-02-15T16:00"],
+        ],
+      ]);
+    });
+  });
+});
+
+it("KeyValue形式のISO文字列をUnixTimeに変換", () => {
+  const time = [
+    ["startTime", "2022-02-15T15:23"],
+    ["finishTime", "2022-02-15T15:23"],
+  ];
+  const expectedResult = [1644906180000, 1644906180000];
+
+  const returnedValue = time.map((arr) => {
+    if (typeof arr[1] === "string") return convertUnixTime(arr[1]);
+    else throw new Error();
+  });
+
+  expect(returnedValue).toEqual(expectedResult);
+});
+
+it("filterKVByKeys", () => {
+  const keys = ["key1", "key2"];
+  const filterK1K2 = pickKV(keys);
+
+  const data = [
+    ["key1", "value1"],
+    [0, "value0"],
+    ["key2", "value2"],
+    ["key3", "value3"],
+  ];
+
+  expect(data.filter(filterK1K2)).toEqual([
+    ["key1", "value1"],
+    ["key2", "value2"],
+  ]);
+});
