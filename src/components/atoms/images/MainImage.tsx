@@ -18,10 +18,10 @@ export const MainImage = () => {
     <>
       <div className="px-4 py-4 w-80 sm:w-1/2">
         <div className="text-center">
-        <img className="px-2 py-4" src={fileUrl} alt="アバターの画像です。" />
+        <img className="px-2 py-4 m-auto" src={fileUrl} alt="アバターの画像です。" />
         </div>
         <div className="text-center">
-          <input type="file" accept="image/*" onChange={processImage} />
+          <input type="file" accept="image/*" onChange={processImage} title=''/>
         </div>
       </div>
     </>
