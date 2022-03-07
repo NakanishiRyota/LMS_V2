@@ -15,6 +15,7 @@ import {
 import { Table } from "../organisms/Table";
 
 export const Form = () => {
+  // TODO: でふぉるデフォルトの値は個々ではない場所でも使う可能性があるので、別のばしょで定義。＆デフォルトの○○は使用者側が関数でその都度生成するようにするほうが安全
   const defaultStudyLog = {
     id: 0,
     subject: "国語",
@@ -47,6 +48,7 @@ export const Form = () => {
   };
 
   //科目、開始時間、終了時間が変わった時の処理
+  // TODO: handleChangesは配列ではなく、オブジェクトの形式で、keyがhandleする対象物、valueが対応する関数というデータ構造で定義したほうが、可読性が高くなる
    const handleChanges = [
      {
        func: function (event: any) {
