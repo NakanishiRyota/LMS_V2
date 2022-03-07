@@ -6,7 +6,7 @@ type Select = {
   name: string;
   onChange: (event: any) => any;
 };
-
+//TODO: このままだとSubjectのSelectにしか使えない。これを例えば性別の選択など他の用途でも使えるようにするには、どのようなコードを書けばよいか？
 export const Select: React.FC<Select> = (props) => {
   const { id, name, onChange } = props;
   return (

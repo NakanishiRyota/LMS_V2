@@ -44,6 +44,7 @@ export const theBeginningOfMonthUnixTime = getTheBeginningOfMonthUnixTime();
 export const theEndOfMonthUnixTime = getTheEndOfMonthUnixTime();
 
 //週初めのISO時間を取得
+// TODO: dateがグローバル変数になっているため、プログラム起動後に長時間立つと、計算結果がずれる-->改善したい
 export const getTheBeginningOfWeek = () => {
   while (true) {
     if (date.getDay() == 1) break;
