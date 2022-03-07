@@ -1,17 +1,25 @@
 import { convertUnixTime, millSecToMin, nowUnixTime, theBeginningOfMonthUnixTime, theEndOfMonthUnixTime, theBiginningOfWeekUnixTime, theEndOfWeekUnixTime} from "./DateUtil";
 
+// TODO:時間に関する定数の定義はControllerで行うべきではない
 const SEVEN_DAYS_IN_MILLSECONDS = 7 * 24 * 60 * 60 * 1000;
 
+// TODO: このファイルの役割が大きすぎる。方針：studylogsのデータ抽出と、時間の計算(string => number, number×number => boolean)は分離させる。
+
+
+// TODO: startTime, finishTimeはstringではなく、numberでもっておけるように変更する
+// todo: subjectはstring全体で定義されていなくても良いので、もう少し定義の粒度を下げる
 export type studyLog = {
   id: number;
-  subject: string;
+  subject: string; // '国語' | '数学' | '英語' | ...
   startTime: string;
   finishTime: string;
 };
 
 //startTimeを1970年1月1日からの経過ミリ秒数に変換
 const getStartTime = (studyLog: studyLog): number => {
+  // sutdylogsのデータ抽出
   const startTimeString = studyLog.startTime;
+  // string --> number
   const startTime = convertUnixTime(startTimeString);
   return startTime;
 };
@@ -42,8 +50,6 @@ export const inThisWeek = ([startTime, finishTime]: [number, number]): boolean =
       return false;
     }
 }
-
-
 
 const inThisMonth = ([startTime, finishTime]): boolean => {
   const startUnixTime = startTime;
@@ -89,6 +95,7 @@ const calcStudyTimeWith =
       // [ [ 4314784392479, 84394280438290 ], [ 4839248290348, 89432048209 ],[ 4839248290348, 89432048209 ]]
       .filter(timeCond)
       // [ [ 4314784392479, 84394280438290 ], [ 4839248290348, 89432048209 ]]
+      // [ { starttime:4314784392479, finishtime:84394280438290 }, [ 4839248290348, 89432048209 ]]
       .map(([startTime, finishTime]) => millSecToMin(finishTime - startTime))
       // [ 10, 8]
       .reduce((acm, value) => acm + value, 0);

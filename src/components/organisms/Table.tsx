@@ -28,6 +28,7 @@ export const Table: React.FC<tableProps> = (props) => {
             <td className="border px-4 py-2">{monthStudyTime}min</td>
             <td className="border px-4 py-2">{totalStudyTime}min</td>
           </tr>
+          {/* TODO: ↓のコードは、例えば、ボーダー線のデザインを変える時に5回、同じ書換作業がいる。1回でできるようにするには？ */}
           <tr className="bg-gray-100">
             <td colSpan={2} className="border px-4 py-2">
               国語
