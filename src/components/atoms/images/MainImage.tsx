@@ -16,7 +16,7 @@ export const MainImage = () => {
   }
   return (
     <>
-      <div className="px-4 py-4 bg-gray-200 w-80 sm:w-1/2">
+      <div className="px-4 py-4 w-80 sm:w-1/2">
         <div className="text-center">
         <img className="px-2 py-4" src={fileUrl} alt="アバターの画像です。" />
         </div>
